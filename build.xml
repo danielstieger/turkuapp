@@ -20,10 +20,10 @@
 
 
   <!-- **** app specific definitions **************************************************************** -->
-  <property name="appName"              value="TurkuApp" />
-  <property name="appMainclass"         value="org.modellwerkstatt.simple.o1deploy_simpleApp.App_Desktop_Order" />
-  <property name="appConfiguration"     value="org/modellwerkstatt/simple/o9infra_configs/TurkuConfig.xml" /> 
-  <property name="appHomeScreen"        value="TurkuApp" />
+  <property name="appName"              value="TurkuEfwws" />
+  <property name="appMainclass"         value="at.mlab.erp.app.app.eFWWS" />
+  <property name="appConfiguration"     value="at/mlab/erp/app/appConf/TurkuEfwws.xml" /> 
+  <property name="appHomeScreen"        value="TurkuEfwws" />
   <property name="turkuWarLocation"		value="/Users/danielstieger/migration/2020_3/turkuforms/build/libs/turkuforms.war" />
   
 
@@ -32,15 +32,13 @@
  
         
   <!-- **** solutions to incorporate in this build ************************************************** -->
-  <property name="solultionSimpleGen"   value="${buildUserHome}/simpleone/solutions/Simple/classes_gen" />
+  <property name="solultionSimpleGen"   value="${buildUserHome}/eFWWS/solutions/at.hafina.filiale.wws/classes_gen" />
+  <property name="solultionSimpleGen1"  value="${buildUserHome}/FIRM/solutions/at.hafina.firmshared/classes_gen" />
+  <property name="solultionJars"        value="${buildUserHome}/eFWWS/jars" />
+    
+  <property name="appBuildVersion" value="0.0.1"/>
 
-  <exec executable="java" outputproperty="appBuildVersion">
-   <arg value="-cp"/>
-   <!-- <arg value="${solultionSimpleGen};${execInBuildClassPathWin}" /> -->
-   <arg value="${solultionSimpleGen}:${execInBuildClassPathUnix}" />
-   <arg value="org.modellwerkstatt.simple.o8infra_objects.TestSetting" />
-  </exec>
-  
+
   <echo>
     Run by ${user.name} on Java Home : ${java.home}
     Building VERSION ${appBuildVersion} of ${appMainclass}
@@ -50,14 +48,16 @@
 
 
 
-
-
-
   <target name="default" depends="moware.turkuforms">
   
     <mkdir dir="work/WEB-INF/classes"/>
     <copy todir="work/WEB-INF/classes">
       <fileset dir="${solultionSimpleGen}" />
+      <fileset dir="${solultionSimpleGen1}" />
+    </copy>
+    
+    <copy todir="work/WEB-INF/lib">
+      <fileset dir="${solultionJars}" />
     </copy>
     
     <mkdir dir="dist"/>  
@@ -84,20 +84,5 @@
     <delete dir="dist"/>
     <delete dir="turku"/>
     
-  </target>
-  
-  <target name="rt">
-  	<copy todir="${tomcatHomeDir}/webapps/${appName}/static/template_leg">
-  		<fileset dir="artefact/template_leg" />
-  	</copy>
-    	<copy todir="${tomcatHomeDir}/webapps/${appName}/static/template_suivant">
-  		<fileset dir="artefact/template_suivant" />
-  	</copy>
-  </target>
-  
-  <target name="redeploy" depends="default">
-  	<copy todir="${tomcatHomeDir}/webapps/${appName}">
-  		<fileset dir="work" />
-  	</copy>
   </target>
 </project>
