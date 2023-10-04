@@ -15,8 +15,8 @@
 <project name="TurkuApp" default="mowareBuildSimpleOne">      
   
   <!-- **** include files setup **************************************************************** -->
-  <property name="tomcatHomeDir" value="/Users/danielstieger/stuff/green" /> 
-  <include file="../moware/objectflow/assembly/bmoware.xml" as="bmoware"/>
+  <!-- <property name="tomcatHomeDir" value="/Users/danielstieger/stuff/green" /> 
+  <include file="../moware/objectflow/assembly/bmoware.xml" as="bmoware"/> -->
   <include file="../moware/objectflow/assembly/moware.xml" as="moware"/>
   
 
@@ -39,8 +39,8 @@
   <property name="appName" value="eFWWS" />
   <exec executable="java" outputproperty="appBuildVersion">
    <arg value="-cp"/>
-   <!-- <arg value="${solultionSimpleGen};${execInBuildClassPathWin}" /> -->
-   <arg value="${solultionSimpleGen}:${execInBuildClassPathUnix}" />
+   <arg value="${solultionSimpleGen};${execInBuildClassPathWin}" />
+   <!-- <arg value="${solultionSimpleGen}:${execInBuildClassPathUnix}" /> -->
    <arg value="at.mlab.erp.app.appData.eFwwsSettings" />
   </exec>
   
@@ -53,7 +53,9 @@
 
 
 
-  <target name="mowareBuildSimpleOne" depends="bmoware.mowareUpdatePluginForTukru, moware.turkuforms">
+  <!-- <target name="mowareBuildSimpleOne" depends="bmoware.mowareUpdatePluginForTukru, moware.turkuforms"> -->
+  <target name="mowareBuildSimpleOne" depends="moware.turkuforms">
+  
     <mkdir dir="work/WEB-INF/classes"/>
     <copy todir="work/WEB-INF/classes">
       <fileset dir="${solultionSimpleGen}" />
