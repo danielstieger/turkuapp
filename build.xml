@@ -12,12 +12,14 @@
  
 -->
  
-<project name="TurkuApp" default="mowareBuildSimpleOne">      
+<project name="TurkuApp" default="buildEFWWS">      
   
   <!-- **** include files setup **************************************************************** -->
   <!-- <property name="tomcatHomeDir" value="/Users/danielstieger/stuff/green" /> 
   <include file="../moware/objectflow/assembly/bmoware.xml" as="bmoware"/> -->
   <include file="../moware/objectflow/assembly/moware.xml" as="moware"/>
+  <include file="../moware/objectflow/assembly/jmxsupport.xml" as="jmx"/>
+  
   
 
   <!-- **** app specific definitions **************************************************************** -->
@@ -54,7 +56,7 @@
 
 
   <!-- <target name="mowareBuildSimpleOne" depends="bmoware.mowareUpdatePluginForTukru, moware.turkuforms"> -->
-  <target name="mowareBuildSimpleOne" depends="moware.turkuforms">
+  <target name="buildEFWWS" depends="moware.turkuforms">
   
     <mkdir dir="work/WEB-INF/classes"/>
     <copy todir="work/WEB-INF/classes">
@@ -76,17 +78,28 @@
     
   </target>
   
-  <target name="redeploy" depends="mowareBuildSimpleOne">
+  <target name="redeploy" depends="buildEFWWS">
   	<copy todir="${tomcatHomeDir}/webapps/">
   		<fileset dir="dist/" />
   	</copy>
   </target>
   
+  
+  <target name="markAsOld">
+    <!-- PROBABLY use a propoerty like OLDVERSION to trak the version to undeploy -->
+    <antcall target="jmx.setParDeployForwardNotDirty">
+    	<param name="jmxHost"       value="localhost"/>
+        <param name="jmxPort"       value="9005"/>
+        <param name="appName"       value="${appMainclass}" />
+        <param name="appVersion"    value="${appBuildVersion}" />
+    </antcall>
+  </target>
+  
+  
   <target name="cleanApp" description="Delete old work and dist directories">
 	<delete dir="work"/>
     <delete dir="dist"/>
     <delete dir="turku"/>
-    
   </target>
   
 </project>
