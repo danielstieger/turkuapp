@@ -26,6 +26,9 @@
   <property name="appMainclass"         value="at.mlab.erp.app.app.eFWWS" />
   <property name="appConfiguration"     value="at/mlab/erp/app/appConf/AppConfTurku_DBLola_Test.xml" /> 
   <property name="appHomeScreen"        value="eFWWS" />
+  <property name="appFavicon"           value="./favicon.ico" />
+
+  
  
 
  
