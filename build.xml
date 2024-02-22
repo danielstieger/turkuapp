@@ -13,6 +13,13 @@
 -->
  
 <project name="TurkuApp" default="buildEFWWS">      
+
+
+  <!-- **** app specific definitions **************************************************************** -->
+  <property name="appMainclass"         value="at.mlab.erp.app.app.eFWWS" />
+  <property name="appConfiguration"     value="at/mlab/erp/app/appConf/AppConfTurku_DBLola_Test.xml" /> 
+  <property name="appFavicon"           value="./favicon.ico" />
+
   
   <!-- **** include files setup **************************************************************** -->
   <!-- <property name="tomcatHomeDir" value="/Users/danielstieger/stuff/green" /> 
@@ -22,10 +29,6 @@
   
   
 
-  <!-- **** app specific definitions **************************************************************** -->
-  <property name="appMainclass"         value="at.mlab.erp.app.app.eFWWS" />
-  <property name="appConfiguration"     value="at/mlab/erp/app/appConf/AppConfTurku_DBLola_Test.xml" /> 
-  <property name="appFavicon"           value="./favicon.ico" />
 
   
  
