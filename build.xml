@@ -7,49 +7,44 @@
  daniel stieger, autum 2023, koblach
 
  
- export JAVA_HOME=/Library/Java/JavaVirtualMachines/jbr11/Contents/Home
+ export JAVA_HOME=/Library/Java/JavaVirtualMachines/jbr17/Contents/Home
  export PATH=$PATH:/Users/danielstieger/javaexe/ant/bin
  
 -->
  
-<project name="TurkuApp" default="buildEFWWS">      
+<project name="TurkuApp" default="buildReko">      
 
 
   <!-- **** app specific definitions **************************************************************** -->
-  <property name="appMainclass"         value="at.mlab.erp.app.app.eFWWS" />
-  <property name="appConfiguration"     value="at/mlab/erp/app/appConf/AppConfTurku_DBLola_Test.xml" /> 
+  <property name="appMainclass"         value="at.hafina.reko.app.rekoAPP.RekoApp" />
+  <property name="appConfiguration"     value="at/hafina/reko/app/rekoAPP/AppConfigTurku.xml" /> 
   <property name="appFavicon"           value="./favicon.ico" />
 
   
   <!-- **** include files setup **************************************************************** -->
-  <!-- <property name="tomcatHomeDir" value="/Users/danielstieger/stuff/green" /> 
-  <include file="../moware/objectflow/assembly/bmoware.xml" as="bmoware"/> -->
-  <include file="../moware/objectflow/assembly/moware.xml" as="moware"/>
-  <include file="../moware/objectflow/assembly/jmxsupport.xml" as="jmx"/>
-  
-  
-
-
-  
- 
-
- 
+  <property name="tomcatHomeDir" value="/Users/danielstieger/stuff/green" /> 
+  <include file="../moware/objectflow/assembly/bmoware.xml" as="bmoware"/>
+  <include file="../moware/objectflow/assembly/moware.xml" as="moware"/> 
  
         
   <!-- **** solutions to incorporate in this build ************************************************** -->
-  <property name="solultionSimpleGen"   value="${buildUserHome}/eFWWS/solutions/at.hafina.filiale.wws/classes_gen" />
-  <property name="solultionSimpleGen1"  value="${buildUserHome}/FIRM/solutions/at.hafina.firmshared/classes_gen" />
-  <property name="solultionJars"        value="${buildUserHome}/eFWWS/jars" />
-    
-
+  <property name="solultionSimpleGen"   value="${buildUserHome}/Reko30/solutions/at.hafina.reko/classes_gen" />
+  <property name="solultionSimpleGen1"  value="${buildUserHome}/HafinaBasis/solutions/at.hafina.basis/classes_gen" />
+  
+  <property name="solultionJars"        value="${mowarePluginHomeDir}/jars/richclient/" />
+  
   <!-- name of war and version -->
-  <property name="appName" value="eFWWS" />
+  <property name="appName" value="tReko" />
+  <property name="appBuildVersion" value="0.99" />
+  
+  <!-- 
+  <arg value="${solultionSimpleGen};${execInBuildClassPathWin}" />  
   <exec executable="java" outputproperty="appBuildVersion">
    <arg value="-cp"/>
-   <arg value="${solultionSimpleGen};${execInBuildClassPathWin}" />
-   <!-- <arg value="${solultionSimpleGen}:${execInBuildClassPathUnix}" /> -->
+   <arg value="${solultionSimpleGen}:${execInBuildClassPathUnix}" />
    <arg value="at.mlab.erp.app.appData.eFwwsSettings" />
   </exec>
+  -->
   
   <echo>
   	*  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  * 
@@ -61,18 +56,23 @@
 
 
   <!-- <target name="mowareBuildSimpleOne" depends="bmoware.mowareUpdatePluginForTukru, moware.turkuforms"> -->
-  <target name="buildEFWWS" depends="moware.turkuforms">
+  <target name="buildReko" depends="moware.turkumi">
   
     <mkdir dir="work/WEB-INF/classes"/>
     <copy todir="work/WEB-INF/classes">
       <fileset dir="${solultionSimpleGen}" />
       <fileset dir="${solultionSimpleGen1}" />
     </copy>
-    
+   
     <copy todir="work/WEB-INF/lib">
-      <fileset dir="${solultionJars}" />
+      <fileset dir="${solultionJars}/">
+         <include name="activation-1.1.jar"/>
+         <include name="mailapi.jar"/>
+         <include name="smtp.jar"/>
+
+      </fileset>
     </copy>  
-    
+
     <mkdir dir="dist"/>  
     <jar destfile="dist/${appName}##${appBuildVersion}.war" basedir="${mowareWorkDir}" update="false">
       <manifest>
@@ -83,7 +83,7 @@
     
   </target>
   
-  <target name="redeploy" depends="buildEFWWS">
+  <target name="redeploy" depends="buildReko">
   	<copy todir="${tomcatHomeDir}/webapps/">
   		<fileset dir="dist/" />
   	</copy>
